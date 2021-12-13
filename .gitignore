@@ -1,0 +1,46 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+*.Python
+*/env/
+*/build/
+*/develop-eggs/
+*/dist/
+*/downloads/
+*/eggs/
+*.eggs/
+*/lib/
+*/lib64/
+*/parts/
+*/sdist/
+*/var/
+*.egg-info/
+*.installed.cfg
+*.egg
+
+# PEP 582; used by e.g. github.com/David-OConnor/pyflow
+__pypackages__/
+
+# Environments
+*.env
+*.env.swp
+*/env/
+*/ENV/
+*/env.bak/
+*/venv.bak/
+
+# Serverless directories
+*.serverless
+
+# MacOS
+*.DS_Store
+
+# Node Modules
+*/node_modules/
+*/package-lock.json

@@ -1,0 +1,39 @@
+org: joshsdoman
+app: am-i-legitimate
+service: SecondDegree
+frameworkVersion: '2 || 3'
+useDotenv: true
+
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+
+provider:
+  name: aws
+  runtime: python3.8
+  lambdaHashingVersion: '20201221'
+  environment:
+    BEARER_TOKEN: ${env:BEARER_TOKEN}
+
+functions:
+  following-my-followers-test:
+    handler: handler.followingMyFollowersTest
+    events:
+      - httpApi:
+          path: /test
+          method: get
+    package:
+      patterns:
+        - functions
+  following-my-followers:
+    handler: handler.followingMyFollowers
+    events:
+      - httpApi:
+          path: /
+          method: post
+    package:
+      patterns:
+        - functions
