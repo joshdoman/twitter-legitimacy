@@ -29,7 +29,6 @@ def followsMyFollowersHelper(source_user, target_user):
     user_info = get_user_info([source_user, target_user])['data']
     source_user_info = user_info[0]
     target_user_info = user_info[1]
-    print(user_info)
 
     # 3. Get users target follows that follow source
     users = get_users_you_follow_that_follow_me(source_user_info['id'], target_user_info['id'])

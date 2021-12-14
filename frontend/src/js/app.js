@@ -11,6 +11,19 @@ if (window.location.href.includes('success.html')) {
   const decodedResponse = decodeURIComponent(encodedResponse);
   const responseJSON = JSON.parse(decodedResponse);
   console.log(responseJSON);
+
+  const sourceName = responseJSON.source.name;
+  const targetName = responseJSON.target.name;
+  const followersFollowed = Array.from(responseJSON.followers_followed);
+  const count = followersFollowed.length;
+
+  var titleTxt;
+  if (count > 0) {
+    titleTxt = `${targetName} follows ${count} accounts that follow ${sourceName}`;
+  } else {
+    titleTxt = `${targetName} does not follow anyone that follows ${sourceName}`;
+  }
+  document.getElementById('lblTitle').innerHTML = titleTxt;
 }
 
 /*--Functions--*/

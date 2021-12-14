@@ -1159,6 +1159,19 @@ if (window.location.href.includes('success.html')) {
   var decodedResponse = decodeURIComponent(encodedResponse);
   var responseJSON = JSON.parse(decodedResponse);
   console.log(responseJSON);
+  var sourceName = responseJSON.source.name;
+  var targetName = responseJSON.target.name;
+  var followersFollowed = Array.from(responseJSON.followers_followed);
+  var count = followersFollowed.length;
+  var titleTxt;
+
+  if (count > 0) {
+    titleTxt = "".concat(targetName, " follows ").concat(count, " accounts that follow ").concat(sourceName);
+  } else {
+    titleTxt = "".concat(targetName, " does not follow anyone that follows ").concat(sourceName);
+  }
+
+  document.getElementById('lblTitle').innerHTML = titleTxt;
 }
 /*--Functions--*/
 
