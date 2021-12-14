@@ -5,7 +5,7 @@ const fetchService = new FetchService();
 /*-- /Objects --*/
 
 /*-- On Load -- */
-if (window.location.href.includes('success.html')) {
+if (window.location.href.includes('/success')) {
   const queryString = window.location.search;
   const encodedResponse = queryString.split("?res=")[1];
   const decodedResponse = decodeURIComponent(encodedResponse);

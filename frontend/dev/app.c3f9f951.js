@@ -1153,7 +1153,7 @@ var fetchService = new _FetchService.default();
 
 /*-- On Load -- */
 
-if (window.location.href.includes('success.html')) {
+if (window.location.href.includes('/success')) {
   var queryString = window.location.search;
   var encodedResponse = queryString.split("?res=")[1];
   var decodedResponse = decodeURIComponent(encodedResponse);
