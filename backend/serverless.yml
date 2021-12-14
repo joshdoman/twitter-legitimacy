@@ -19,21 +19,31 @@ provider:
     BEARER_TOKEN: ${env:BEARER_TOKEN}
 
 functions:
-  following-my-followers-test:
-    handler: handler.followingMyFollowersTest
+  follows-my-followers-test:
+    handler: handler.followsMyFollowersTest
     events:
-      - httpApi:
+      - http:
           path: /test
           method: get
     package:
       patterns:
         - functions
-  following-my-followers:
-    handler: handler.followingMyFollowers
+  follows-my-followers:
+    handler: handler.followsMyFollowers
     events:
-      - httpApi:
+      - http:
           path: /
           method: post
+          cors:
+            origin: '*' # <-- Specify allowed origin
+            headers: # <-- Specify allowed headers
+              - Content-Type
+              - X-Amz-Date
+              - Authorization
+              - X-Api-Key
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+            allowCredentials: false
     package:
       patterns:
         - functions

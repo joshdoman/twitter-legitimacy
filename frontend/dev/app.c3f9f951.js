@@ -1151,7 +1151,17 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 var fetchService = new _FetchService.default();
 /*-- /Objects --*/
 
+/*-- On Load -- */
+
+if (window.location.href.includes('success.html')) {
+  var queryString = window.location.search;
+  var encodedResponse = queryString.split("?res=")[1];
+  var decodedResponse = decodeURIComponent(encodedResponse);
+  var responseJSON = JSON.parse(decodedResponse);
+  console.log(responseJSON);
+}
 /*--Functions--*/
+
 
 function submitForm(_x, _x2) {
   return _submitForm.apply(this, arguments);
@@ -1159,7 +1169,7 @@ function submitForm(_x, _x2) {
 
 function _submitForm() {
   _submitForm = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(e, form) {
-    var btnSubmit, jsonFormData, headers, response;
+    var btnSubmit, jsonFormData, headers, response, responseEncoding;
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -1179,14 +1189,14 @@ function _submitForm() {
             headers = buildHeaders(); // 2.4 Request & Response
 
             _context.next = 8;
-            return fetchService.performPostHttpRequest("https://jsonplaceholder.typicode.com/posts", headers, jsonFormData);
+            return fetchService.performPostHttpRequest("https://drrhop28ba.execute-api.us-east-1.amazonaws.com/dev/", headers, jsonFormData);
 
           case 8:
             response = _context.sent;
-            // Uses JSON Placeholder
-            console.log(response); // 2.5 Inform user of result
+            // 2.5 Encode response
+            responseEncoding = encodeURIComponent(JSON.stringify(response)); // 2.6 Inform user of result
 
-            if (response) window.location = "/success.html?FirstName=".concat(response.FirstName, "&LastName=").concat(response.LastName, "&Email=").concat(response.Email, "&id=").concat(response.id);else alert("An error occured.");
+            if (response) window.location = "/success.html?res=".concat(responseEncoding);else alert("An error occured.");
 
           case 11:
           case "end":
@@ -1267,7 +1277,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55346" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55611" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

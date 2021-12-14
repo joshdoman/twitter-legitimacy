@@ -4,6 +4,15 @@ import FetchService from './service/FetchService';
 const fetchService = new FetchService();
 /*-- /Objects --*/
 
+/*-- On Load -- */
+if (window.location.href.includes('success.html')) {
+  const queryString = window.location.search;
+  const encodedResponse = queryString.split("?res=")[1];
+  const decodedResponse = decodeURIComponent(encodedResponse);
+  const responseJSON = JSON.parse(decodedResponse);
+  console.log(responseJSON);
+}
+
 /*--Functions--*/
 async function submitForm(e, form) {
     // 1. Prevent reloading page
@@ -18,11 +27,12 @@ async function submitForm(e, form) {
     // 2.3 Build Headers
     const headers = buildHeaders();
     // 2.4 Request & Response
-    const response = await fetchService.performPostHttpRequest(`https://jsonplaceholder.typicode.com/posts`, headers, jsonFormData); // Uses JSON Placeholder
-    console.log(response);
-    // 2.5 Inform user of result
+    const response = await fetchService.performPostHttpRequest(`https://drrhop28ba.execute-api.us-east-1.amazonaws.com/dev/`, headers, jsonFormData);
+    // 2.5 Encode response
+    const responseEncoding = encodeURIComponent(JSON.stringify(response));
+    // 2.6 Inform user of result
     if(response)
-        window.location = `/success.html?FirstName=${response.FirstName}&LastName=${response.LastName}&Email=${response.Email}&id=${response.id}`;
+        window.location = `/success.html?res=${responseEncoding}`;
     else
         alert(`An error occured.`);
 }

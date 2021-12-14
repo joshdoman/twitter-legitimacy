@@ -24,7 +24,7 @@ def create_followers_url_for_username(username):
 
 
 def get_params():
-    return {"user.fields": "created_at", "max_results": 1000}
+    return {"user.fields": "profile_image_url", "max_results": 1000}
 
 
 def bearer_oauth(r):
