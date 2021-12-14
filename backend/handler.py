@@ -1,5 +1,6 @@
 import json
 
+from functions.UserAPI import get_user_info
 from functions.SecondDegreeTwitter import get_users_you_follow_that_follow_me
 
 
@@ -18,14 +19,26 @@ def followsMyFollowersTest(event, context):
 
 
 def followsMyFollowersHelper(source_user, target_user):
-    print("Users that {} follows that follow {}".format(target_user, source_user))
+    print("{} looking up {}".format(source_user, target_user))
 
-    users = get_users_you_follow_that_follow_me(source_user, target_user)
+    # 1. Remove '@' from string (user can input "@handle" or "handle")
+    source_user = source_user.replace("@","")
+    target_user = target_user.replace("@","")
 
+    # 2. Get user info for the source and target users (id, name, profile_url)
+    user_info = get_user_info([source_user, target_user])['data']
+    source_user_info = user_info[0]
+    target_user_info = user_info[1]
+    print(user_info)
+
+    # 3. Get users target follows that follow source
+    users = get_users_you_follow_that_follow_me(source_user_info['id'], target_user_info['id'])
+
+    # 4. Return response
     body = {
-        "source_user": source_user,
-        "target_user": target_user,
-        "users_target_follows_that_follow_source": users,
+        "source": source_user_info,
+        "target": target_user_info,
+        "followers_followed": users,
     }
 
     response = {

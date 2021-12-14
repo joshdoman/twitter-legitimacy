@@ -11,7 +11,7 @@ body {
       padding: 1rem 2.5rem 1.5rem 2.5rem;
       margin: auto;
   }
-  
+
   .card {
       animation: 0.9s ease-in-out 0s 1 fadeIn;
       box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -36,7 +36,12 @@ body {
       display: block;
   }
   /*-- /form --*/
-  
+
+  /*-- Center Text --*/
+  .center {
+    text-align: center;
+  }
+
   /*-- TextInput --*/
   .input-text {
       font-weight: 500;
@@ -81,7 +86,7 @@ body {
       opacity: 0.9;
   }
   button:focus {
-      opacity: 1;    
+      opacity: 1;
   }
   button:hover, button:focus {
     cursor: pointer;
@@ -91,15 +96,15 @@ body {
     cursor: not-allowed;
   }
   /*-- /Button --*/
-  
+
   /*-- Utils --*/
   .d-flex {
     display: flex;
   }
   .justify-content-end {
-    justify-content: end;  
+    justify-content: end;
     justify-content: flex-end;
-  
+
   }
   .m-2 {
       margin: 2rem;

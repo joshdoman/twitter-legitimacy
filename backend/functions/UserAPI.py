@@ -12,7 +12,7 @@ def create_url(usernames):
     # You can enter up to 100 comma-separated values.
     usernamesStr = ",".join(usernames)
     usernamesParam = "usernames={}".format(usernamesStr)
-    user_fields = "user.fields=id,name"
+    user_fields = "user.fields=id,name,username,profile_image_url"
     # User fields are adjustable, options include:
     # created_at, description, entities, id, location, name,
     # pinned_tweet_id, profile_image_url, protected,

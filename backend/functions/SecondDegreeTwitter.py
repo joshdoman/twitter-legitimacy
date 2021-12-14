@@ -16,14 +16,17 @@ def get_overlap(users1, users2):
     return overlap
 
 
-def get_users_you_follow_that_follow_me(my_username, your_username):
+def get_users_you_follow_that_follow_me(my_id, your_id):
+    my_followers = get_followers_for_id(my_id)["data"]
+    your_following = get_following_for_id(your_id)["data"]
+    return get_overlap(my_followers, your_following)
+
+
+def get_users_you_follow_that_follow_me_using_handles(my_username, your_username):
     users = get_user_info([my_username, your_username])
     my_user_id = users['data'][0]['id']
     your_user_id = users['data'][1]['id']
-
-    my_followers = get_followers_for_id(my_user_id)["data"]
-    your_following = get_following_for_id(your_user_id)["data"]
-    return get_overlap(my_followers, your_following)
+    return get_users_you_follow_that_follow_me_using_ids(my_user_id, your_user_id)
 
 
 def get_users_who_follow_you_and_me(my_username, your_username):
