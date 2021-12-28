@@ -17,9 +17,12 @@ if (window.location.href.includes('/success')) {
   const followersFollowed = Array.from(responseJSON.followers_followed);
   const count = followersFollowed.length;
 
+  // 1. Set title text on success page
   var titleTxt;
-  if (count > 0) {
+  if (count > 1) {
     titleTxt = `${targetName} follows ${count} accounts that follow ${sourceName}`;
+  } else if (count === 1) {
+    titleTxt = `${targetName} follows 1 account that follows ${sourceName}`;
   } else {
     titleTxt = `${targetName} does not follow anyone that follows ${sourceName}`;
   }

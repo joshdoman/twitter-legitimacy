@@ -1162,11 +1162,14 @@ if (window.location.href.includes('/success')) {
   var sourceName = responseJSON.source.name;
   var targetName = responseJSON.target.name;
   var followersFollowed = Array.from(responseJSON.followers_followed);
-  var count = followersFollowed.length;
+  var count = followersFollowed.length; // 1. Set title text on success page
+
   var titleTxt;
 
-  if (count > 0) {
+  if (count > 1) {
     titleTxt = "".concat(targetName, " follows ").concat(count, " accounts that follow ").concat(sourceName);
+  } else if (count === 1) {
+    titleTxt = "".concat(targetName, " follows 1 account that follows ").concat(sourceName);
   } else {
     titleTxt = "".concat(targetName, " does not follow anyone that follows ").concat(sourceName);
   }
@@ -1290,7 +1293,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55611" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60826" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
