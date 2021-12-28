@@ -20,13 +20,32 @@ if (window.location.href.includes('/success')) {
   // 1. Set title text on success page
   var titleTxt;
   if (count > 1) {
-    titleTxt = `${targetName} follows ${count} accounts that follow ${sourceName}`;
+    titleTxt = `Found ${count} followers`;
   } else if (count === 1) {
-    titleTxt = `${targetName} follows 1 account that follows ${sourceName}`;
+    titleTxt = `Found 1 follow`;
   } else {
-    titleTxt = `${targetName} does not follow anyone that follows ${sourceName}`;
+    titleTxt = `No followers found`;
   }
+  // if (count > 1) {
+  //   titleTxt = `${targetName} follows ${count} accounts that follow ${sourceName}`;
+  // } else if (count === 1) {
+  //   titleTxt = `${targetName} follows 1 account that follows ${sourceName}`;
+  // } else {
+  //   titleTxt = `${targetName} does not follow anyone that follows ${sourceName}`;
+  // }
   document.getElementById('lblTitle').innerHTML = titleTxt;
+
+  let listElement = document.getElementById('lblTitle');
+  followersFollowed.forEach(json => {
+    // 1. Create an item for follower
+    let listItem = document.createElement('li');
+    // 2. Add the item text
+    const name = json.name;
+    const username = json.username;
+    listItem.innerHTML = `${name} (@${username})`;
+    // 3. Add listItem to the listElement
+    listElement.appendChild(listItem);
+  })
 }
 
 /*--Functions--*/

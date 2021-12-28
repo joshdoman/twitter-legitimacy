@@ -1167,14 +1167,32 @@ if (window.location.href.includes('/success')) {
   var titleTxt;
 
   if (count > 1) {
-    titleTxt = "".concat(targetName, " follows ").concat(count, " accounts that follow ").concat(sourceName);
+    titleTxt = "Found ".concat(count, " followers");
   } else if (count === 1) {
-    titleTxt = "".concat(targetName, " follows 1 account that follows ").concat(sourceName);
+    titleTxt = "Found 1 follow";
   } else {
-    titleTxt = "".concat(targetName, " does not follow anyone that follows ").concat(sourceName);
-  }
+    titleTxt = "No followers found";
+  } // if (count > 1) {
+  //   titleTxt = `${targetName} follows ${count} accounts that follow ${sourceName}`;
+  // } else if (count === 1) {
+  //   titleTxt = `${targetName} follows 1 account that follows ${sourceName}`;
+  // } else {
+  //   titleTxt = `${targetName} does not follow anyone that follows ${sourceName}`;
+  // }
+
 
   document.getElementById('lblTitle').innerHTML = titleTxt;
+  var listElement = document.getElementById('lblTitle');
+  followersFollowed.forEach(function (json) {
+    // 1. Create an item for follower
+    var listItem = document.createElement('li'); // 2. Add the item text
+
+    var name = json.name;
+    var username = json.username;
+    listItem.innerHTML = "".concat(name, " (@").concat(username, ")"); // 3. Add listItem to the listElement
+
+    listElement.appendChild(listItem);
+  });
 }
 /*--Functions--*/
 
@@ -1293,7 +1311,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60826" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61269" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
