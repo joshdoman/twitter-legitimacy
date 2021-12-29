@@ -1158,9 +1158,7 @@ if (window.location.href.includes('/success')) {
   var encodedResponse = queryString.split("?res=")[1];
   var decodedResponse = decodeURIComponent(encodedResponse);
   var responseJSON = JSON.parse(decodedResponse);
-  var sourceName = responseJSON.source.name;
   var sourceUsername = responseJSON.source.username;
-  var targetName = responseJSON.target.name;
   var targetUsername = responseJSON.target.username;
   var followersFollowed = Array.from(responseJSON.followers_followed);
   var count = followersFollowed.length; // 1. Set title text on success page
@@ -1169,29 +1167,12 @@ if (window.location.href.includes('/success')) {
   var descriptionTxt;
 
   if (count > 0) {
-    // titleTxt = `You're legitimate!`;
     titleTxt = "@".concat(targetUsername, " follows ").concat(count, " of @").concat(sourceUsername, "'s followers:");
   } else {
-    // titleTxt = `You're not there yet, but keep working on it!`;
     titleTxt = "@".concat(targetUsername, " does not follow any of @").concat(sourceUsername, "'s followers:");
-  } // if (count > 1) {
-  //   titleTxt = `Found ${count} followers!`;
-  // } else if (count === 1) {
-  //   titleTxt = `Found 1 follower!`;
-  // } else {
-  //   titleTxt = `No followers found`;
-  // }
-  // if (count > 1) {
-  //   titleTxt = `${targetName} follows ${count} accounts that follow ${sourceName}`;
-  // } else if (count === 1) {
-  //   titleTxt = `${targetName} follows 1 account that follows ${sourceName}`;
-  // } else {
-  //   titleTxt = `${targetName} does not follow anyone that follows ${sourceName}`;
-  // }
+  }
 
-
-  document.getElementById('lblTitle').innerHTML = titleTxt; // document.getElementById('lblDescription').innerHTML = descriptionTxt;
-
+  document.getElementById('lblTitle').innerHTML = titleTxt;
   var listElement = document.getElementById('listElement');
   followersFollowed.forEach(function (json) {
     // 1. Create an item for follower
@@ -1233,22 +1214,31 @@ function _submitForm() {
 
             headers = buildHeaders(); // 2.4 Request & Response
 
-            _context.next = 8;
+            _context.prev = 6;
+            _context.next = 9;
             return fetchService.performPostHttpRequest("https://drrhop28ba.execute-api.us-east-1.amazonaws.com/dev/", headers, jsonFormData);
 
-          case 8:
+          case 9:
             response = _context.sent;
             // 2.5 Encode response
             responseEncoding = encodeURIComponent(JSON.stringify(response)); // 2.6 Inform user of result
 
-            if (response) window.location = "/success.html?res=".concat(responseEncoding);else alert("An error occured.");
+            window.location = "/success.html?res=".concat(responseEncoding);
+            _context.next = 18;
+            break;
 
-          case 11:
+          case 14:
+            _context.prev = 14;
+            _context.t0 = _context["catch"](6);
+            console.log(_context.t0);
+            alert(_context.t0);
+
+          case 18:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee);
+    }, _callee, null, [[6, 14]]);
   }));
   return _submitForm.apply(this, arguments);
 }
@@ -1322,7 +1312,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64352" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59314" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

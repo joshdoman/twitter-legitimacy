@@ -11,9 +11,7 @@ if (window.location.href.includes('/success')) {
   const decodedResponse = decodeURIComponent(encodedResponse);
   const responseJSON = JSON.parse(decodedResponse);
 
-  const sourceName = responseJSON.source.name;
   const sourceUsername = responseJSON.source.username;
-  const targetName = responseJSON.target.name;
   const targetUsername = responseJSON.target.username;
   const followersFollowed = Array.from(responseJSON.followers_followed);
   const count = followersFollowed.length;
@@ -22,28 +20,11 @@ if (window.location.href.includes('/success')) {
   var titleTxt;
   var descriptionTxt;
   if (count > 0) {
-    // titleTxt = `You're legitimate!`;
     titleTxt = `@${targetUsername} follows ${count} of @${sourceUsername}'s followers:`
   } else{
-    // titleTxt = `You're not there yet, but keep working on it!`;
     titleTxt = `@${targetUsername} does not follow any of @${sourceUsername}'s followers:`
   }
-  // if (count > 1) {
-  //   titleTxt = `Found ${count} followers!`;
-  // } else if (count === 1) {
-  //   titleTxt = `Found 1 follower!`;
-  // } else {
-  //   titleTxt = `No followers found`;
-  // }
-  // if (count > 1) {
-  //   titleTxt = `${targetName} follows ${count} accounts that follow ${sourceName}`;
-  // } else if (count === 1) {
-  //   titleTxt = `${targetName} follows 1 account that follows ${sourceName}`;
-  // } else {
-  //   titleTxt = `${targetName} does not follow anyone that follows ${sourceName}`;
-  // }
   document.getElementById('lblTitle').innerHTML = titleTxt;
-  // document.getElementById('lblDescription').innerHTML = descriptionTxt;
 
   let listElement = document.getElementById('listElement');
   followersFollowed.forEach(json => {
@@ -73,14 +54,16 @@ async function submitForm(e, form) {
     // 2.3 Build Headers
     const headers = buildHeaders();
     // 2.4 Request & Response
-    const response = await fetchService.performPostHttpRequest(`https://drrhop28ba.execute-api.us-east-1.amazonaws.com/dev/`, headers, jsonFormData);
-    // 2.5 Encode response
-    const responseEncoding = encodeURIComponent(JSON.stringify(response));
-    // 2.6 Inform user of result
-    if(response)
-        window.location = `/success.html?res=${responseEncoding}`;
-    else
-        alert(`An error occured.`);
+    try {
+      const response = await fetchService.performPostHttpRequest(`https://drrhop28ba.execute-api.us-east-1.amazonaws.com/dev/`, headers, jsonFormData);
+      // 2.5 Encode response
+      const responseEncoding = encodeURIComponent(JSON.stringify(response));
+      // 2.6 Inform user of result
+      window.location = `/success.html?res=${responseEncoding}`;
+    } catch (e) {
+      console.log(e)
+      alert(e)
+    }
 }
 
 function buildHeaders(authorization = null) {
