@@ -1,5 +1,6 @@
-# from functions.FollowersAPI import get_followers_for_id, get_following_for_id
-# from functions.UserAPI import get_user_info
+import json
+import sys
+
 from FollowersAPI import get_followers_for_id, get_following_for_id
 from UserAPI import get_user_info
 
@@ -20,6 +21,7 @@ def get_overlap(users1, users2):
 
 def get_users_you_follow_that_follow_me(my_id, your_id):
     my_followers = get_followers_for_id(my_id)
+    sys.getsizeof(json.dump(my_followers))
     your_following = get_following_for_id(your_id)
     return get_overlap(my_followers, your_following)
 
@@ -42,14 +44,14 @@ def get_users_who_follow_you_and_me(my_username, your_username):
 
 
 if __name__ == "__main__":
-    my_username = "AlanaDLevin"
-    your_username = "nishitaARK"
-    print("Users that {} follows that follow {}".format(your_username, my_username))
-    users = get_users_you_follow_that_follow_me_using_handles(my_username, your_username)
-    for user in users:
-        print("{} ({})".format(user['name'], user['username']))
+    # my_username = "AlanaDLevin"
+    # your_username = "nishitaARK"
+    # print("Users that {} follows that follow {}".format(your_username, my_username))
+    # users = get_users_you_follow_that_follow_me_using_handles(my_username, your_username)
+    # for user in users:
+    #     print("{} ({})".format(user['name'], user['username']))
 
-    print("")
+    # print("")
 
     my_username = "nishitaARK"
     your_username = "AlanaDLevin"

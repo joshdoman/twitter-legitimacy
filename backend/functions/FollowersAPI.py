@@ -24,7 +24,8 @@ def create_followers_url_for_username(username):
 
 
 def get_params(pagination_token=None):
-    params = {"user.fields": "profile_image_url", "max_results": 1000}
+    # params = {"user.fields": "profile_image_url", "max_results": 1000}
+    params = {"max_results": 1000}
     if pagination_token:
         params['pagination_token'] = pagination_token
     return params

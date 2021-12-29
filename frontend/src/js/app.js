@@ -10,22 +10,31 @@ if (window.location.href.includes('/success')) {
   const encodedResponse = queryString.split("?res=")[1];
   const decodedResponse = decodeURIComponent(encodedResponse);
   const responseJSON = JSON.parse(decodedResponse);
-  console.log(responseJSON);
 
   const sourceName = responseJSON.source.name;
+  const sourceUsername = responseJSON.source.username;
   const targetName = responseJSON.target.name;
+  const targetUsername = responseJSON.target.username;
   const followersFollowed = Array.from(responseJSON.followers_followed);
   const count = followersFollowed.length;
 
   // 1. Set title text on success page
   var titleTxt;
-  if (count > 1) {
-    titleTxt = `Found ${count} followers`;
-  } else if (count === 1) {
-    titleTxt = `Found 1 follow`;
-  } else {
-    titleTxt = `No followers found`;
+  var descriptionTxt;
+  if (count > 0) {
+    // titleTxt = `You're legitimate!`;
+    titleTxt = `@${targetUsername} follows ${count} of @${sourceUsername}'s followers:`
+  } else{
+    // titleTxt = `You're not there yet, but keep working on it!`;
+    titleTxt = `@${targetUsername} does not follow any of @${sourceUsername}'s followers:`
   }
+  // if (count > 1) {
+  //   titleTxt = `Found ${count} followers!`;
+  // } else if (count === 1) {
+  //   titleTxt = `Found 1 follower!`;
+  // } else {
+  //   titleTxt = `No followers found`;
+  // }
   // if (count > 1) {
   //   titleTxt = `${targetName} follows ${count} accounts that follow ${sourceName}`;
   // } else if (count === 1) {
@@ -34,8 +43,9 @@ if (window.location.href.includes('/success')) {
   //   titleTxt = `${targetName} does not follow anyone that follows ${sourceName}`;
   // }
   document.getElementById('lblTitle').innerHTML = titleTxt;
+  // document.getElementById('lblDescription').innerHTML = descriptionTxt;
 
-  let listElement = document.getElementById('lblTitle');
+  let listElement = document.getElementById('listElement');
   followersFollowed.forEach(json => {
     // 1. Create an item for follower
     let listItem = document.createElement('li');

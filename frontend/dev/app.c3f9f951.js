@@ -1158,21 +1158,30 @@ if (window.location.href.includes('/success')) {
   var encodedResponse = queryString.split("?res=")[1];
   var decodedResponse = decodeURIComponent(encodedResponse);
   var responseJSON = JSON.parse(decodedResponse);
-  console.log(responseJSON);
   var sourceName = responseJSON.source.name;
+  var sourceUsername = responseJSON.source.username;
   var targetName = responseJSON.target.name;
+  var targetUsername = responseJSON.target.username;
   var followersFollowed = Array.from(responseJSON.followers_followed);
   var count = followersFollowed.length; // 1. Set title text on success page
 
   var titleTxt;
+  var descriptionTxt;
 
-  if (count > 1) {
-    titleTxt = "Found ".concat(count, " followers");
-  } else if (count === 1) {
-    titleTxt = "Found 1 follow";
+  if (count > 0) {
+    // titleTxt = `You're legitimate!`;
+    titleTxt = "@".concat(targetUsername, " follows ").concat(count, " of @").concat(sourceUsername, "'s followers:");
   } else {
-    titleTxt = "No followers found";
+    // titleTxt = `You're not there yet, but keep working on it!`;
+    titleTxt = "@".concat(targetUsername, " does not follow any of @").concat(sourceUsername, "'s followers:");
   } // if (count > 1) {
+  //   titleTxt = `Found ${count} followers!`;
+  // } else if (count === 1) {
+  //   titleTxt = `Found 1 follower!`;
+  // } else {
+  //   titleTxt = `No followers found`;
+  // }
+  // if (count > 1) {
   //   titleTxt = `${targetName} follows ${count} accounts that follow ${sourceName}`;
   // } else if (count === 1) {
   //   titleTxt = `${targetName} follows 1 account that follows ${sourceName}`;
@@ -1181,8 +1190,9 @@ if (window.location.href.includes('/success')) {
   // }
 
 
-  document.getElementById('lblTitle').innerHTML = titleTxt;
-  var listElement = document.getElementById('lblTitle');
+  document.getElementById('lblTitle').innerHTML = titleTxt; // document.getElementById('lblDescription').innerHTML = descriptionTxt;
+
+  var listElement = document.getElementById('listElement');
   followersFollowed.forEach(function (json) {
     // 1. Create an item for follower
     var listItem = document.createElement('li');
