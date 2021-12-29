@@ -1,0 +1,44 @@
+# Source: https://serverless-stack.com/chapters/configure-s3-in-serverless.html
+
+Parameters:
+  FollowersBucketName:
+    Type: String
+    Description: S3 bucket where a user's followers are stored
+    Default: ${self:custom.followersBucket}
+  FollowingBucketName:
+    Type: String
+    Description: S3 bucket where a user's following is stored
+    Default: ${self:custom.followingBucket}
+
+Resources:
+  # S3 bucket where a user's followers are stored
+  FollowersBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref FollowersBucketName
+      CorsConfiguration: ${file(resources/standard-cors.yml)}
+      LifecycleConfiguration:
+        Rules:
+        - Id: DeleteObjectAfter48Hours
+          Status: Enabled
+          ExpirationInDays: ${self:custom.cacheDuration}
+  # S3 bucket where a user's followers are stored
+  FollowingBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref FollowingBucketName
+      CorsConfiguration: ${file(resources/standard-cors.yml)}
+      LifecycleConfiguration:
+        Rules:
+        - Id: DeleteObjectAfter48Hours
+          Status: Enabled
+          ExpirationInDays: ${self:custom.cacheDuration}
+
+# Print out the name of the bucket that is created
+Outputs:
+  FollowersBucketName:
+    Value:
+      Ref: FollowersBucket
+  FollowingBucketName:
+    Value:
+      Ref: FollowingBucket

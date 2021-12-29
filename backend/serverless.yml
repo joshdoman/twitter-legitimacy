@@ -14,6 +14,11 @@ custom:
   # Set the DynamoDB Table Names here:
   followersTableName: CachedFollowers
   followingTableName: CachedFollowing
+  # Set the S3 Bucket Names here:
+  followersBucket: cached-followers
+  followingBucket: cached-following
+  # Cache duration (in days)
+  cacheDuration: 2
 
 
 provider:
@@ -24,8 +29,15 @@ provider:
     BEARER_TOKEN: ${env:BEARER_TOKEN}
     FOLLOWERS_TABLE_NAME: ${self:custom.followersTableName}
     FOLLOWING_TABLE_NAME: ${self:custom.followingTableName}
-    CACHE_DURATION: 48  # i.e. 48 hours
+    FOLLOWERS_BUCKET: ${self:custom.followersBucket}
+    FOLLOWING_BUCKET: ${self:custom.followingBucket}
+    CACHE_DURATION: ${self:custom.cacheDuration}
   iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:GetObject"
+        - "s3:PutObject"
+      Resource: "arn:aws:s3:::*"
     - Effect: "Allow"
       Action:
         - "dynamodb:GetItem"
@@ -39,11 +51,14 @@ provider:
 resources:
   # DynamoDB
   - ${file(resources/dynamodb.yml)}
+  # S3
+  - ${file(resources/s3-buckets.yml)}
 
 
 functions:
   follows-my-followers:
     handler: handler.followsMyFollowers
+    timeout: 30
     events:
       - http:
           path: /
