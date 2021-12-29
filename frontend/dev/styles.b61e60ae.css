@@ -37,6 +37,11 @@ body {
   }
   /*-- /form --*/
 
+  /*-- Follower Result --*/
+  .result {
+      font-weight: 500;
+  }
+
   /*-- Center Text --*/
   .center {
     text-align: center;

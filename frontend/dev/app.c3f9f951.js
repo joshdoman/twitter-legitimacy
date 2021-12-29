@@ -1185,7 +1185,8 @@ if (window.location.href.includes('/success')) {
   var listElement = document.getElementById('lblTitle');
   followersFollowed.forEach(function (json) {
     // 1. Create an item for follower
-    var listItem = document.createElement('li'); // 2. Add the item text
+    var listItem = document.createElement('li');
+    listItem.classList.add('result'); // 2. Add the item text
 
     var name = json.name;
     var username = json.username;
@@ -1311,7 +1312,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61269" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49919" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -39,6 +39,7 @@ if (window.location.href.includes('/success')) {
   followersFollowed.forEach(json => {
     // 1. Create an item for follower
     let listItem = document.createElement('li');
+    listItem.classList.add('result');
     // 2. Add the item text
     const name = json.name;
     const username = json.username;
