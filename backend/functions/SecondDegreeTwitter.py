@@ -26,7 +26,7 @@ def get_users_you_follow_that_follow_me_using_handles(my_username, your_username
     users = get_user_info([my_username, your_username])
     my_user_id = users['data'][0]['id']
     your_user_id = users['data'][1]['id']
-    return get_users_you_follow_that_follow_me_using_ids(my_user_id, your_user_id)
+    return get_users_you_follow_that_follow_me(my_user_id, your_user_id)
 
 
 def get_users_who_follow_you_and_me(my_username, your_username):
@@ -43,7 +43,7 @@ if __name__ == "__main__":
     my_username = "AlanaDLevin"
     your_username = "nishitaARK"
     print("Users that {} follows that follow {}".format(your_username, my_username))
-    users = get_users_you_follow_that_follow_me(my_username, your_username)
+    users = get_users_you_follow_that_follow_me_using_handles(my_username, your_username)
     for user in users:
         print("{} ({})".format(user['name'], user['username']))
 
@@ -52,6 +52,6 @@ if __name__ == "__main__":
     my_username = "nishitaARK"
     your_username = "AlanaDLevin"
     print("Users that {} follows that follow {}".format(your_username, my_username))
-    users = get_users_you_follow_that_follow_me(my_username, your_username)
+    users = get_users_you_follow_that_follow_me_using_handles(my_username, your_username)
     for user in users:
         print("{} ({})".format(user['name'], user['username']))

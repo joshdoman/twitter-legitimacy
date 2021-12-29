@@ -23,8 +23,11 @@ def create_followers_url_for_username(username):
     return "https://api.twitter.com//2/users/by/username/{}/followers".format(username)
 
 
-def get_params():
-    return {"user.fields": "profile_image_url", "max_results": 1000}
+def get_params(pagination_token=None):
+    params = {"user.fields": "profile_image_url", "max_results": 1000}
+    if pagination_token:
+        params['pagination_token'] = pagination_token
+    return params
 
 
 def bearer_oauth(r):
@@ -61,15 +64,35 @@ def get_id_for_user(url):
 
 def get_followers_for_id(user_id):
     url = create_followers_url_for_id(user_id)
-    params = get_params()
-    json_response = connect_to_endpoint(url, params)
+    data = []
+    pagination_token = None
+    completed = False
+    # Paginate through all followers until complete (1000 per page)
+    while not completed:
+        params = get_params(pagination_token)
+        json_response = connect_to_endpoint(url, params)
+        data.append(json_response['data'])
+        if 'next_token' in json_response['meta']:
+            pagination_token = json_response['meta']['next_token']
+        else:
+            completed = True
     return json_response
 
 
 def get_following_for_id(user_id):
     url = create_following_url_for_id(user_id)
-    params = get_params()
-    json_response = connect_to_endpoint(url, params)
+    data = []
+    pagination_token = None
+    completed = False
+    # Paginate through all followers until complete (1000 per page)
+    while not completed:
+        params = get_params(pagination_token)
+        json_response = connect_to_endpoint(url, params)
+        data.append(json_response['data'])
+        if 'next_token' in json_response['meta']:
+            pagination_token = json_response['meta']['next_token']
+        else:
+            completed = True
     return json_response
 
 
