@@ -9,12 +9,9 @@ from functions.UserAPI import get_user_info
 from functions.FollowersAPI import get_followers_for_id, get_following_for_id
 
 # Import DynamoDB
-dynamodb = boto3.client('dynamodb')
 s3 = boto3.client('s3')
 
 # Import Environment Variables
-followersTableName = os.environ['FOLLOWERS_TABLE_NAME']
-followingTableName = os.environ['FOLLOWING_TABLE_NAME']
 followersBucket = os.environ['FOLLOWERS_BUCKET']
 followingBucket = os.environ['FOLLOWING_BUCKET']
 cacheDuration = os.environ['CACHE_DURATION']
@@ -47,17 +44,6 @@ def get_cached_followers(userID):
     except ClientError as e:
         print("ClientError: %s" % e)
         return None
-    # followers_response = dynamodb.get_item(
-    #     TableName=followersTableName,
-    #     Key={
-    #         'UserID': { 'N': userID }
-    #     },
-    # )
-    # if 'Item' in followers_response:
-    #     followers = followers_response['Item']['Followers']['S']
-    #     return json.loads(followers)
-    # else:
-    #     return None
 
 
 def get_cached_following(userID):
@@ -70,17 +56,6 @@ def get_cached_following(userID):
     except ClientError as e:
         print("ClientError: %s" % e)
         return None
-    # following_response = dynamodb.get_item(
-    #     TableName=followingTableName,
-    #     Key={
-    #         'UserID': { 'N': userID }
-    #     },
-    # )
-    # if 'Item' in following_response:
-    #     following = following_response['Item']['Following']['S']
-    #     return json.loads(following)
-    # else:
-    #     return None
 
 
 def cache_followers(userID, followers):
@@ -89,22 +64,6 @@ def cache_followers(userID, followers):
         Bucket=followersBucket,
         Key=userID
     )
-    # timestamp = int(time.time()) + int(cacheDuration) * 3600
-    # cache_response = dynamodb.put_item(
-    #     TableName=followersTableName,
-    #     Item={
-    #         'UserID': {
-    #             'N': userID
-    #         },
-    #         'Followers': {
-    #             'S': json.dumps(followers)
-    #         },
-    #         'ExpireAt': {
-    #             'N': str(timestamp)
-    #         }
-    #     }
-    # )
-    # print("DynamoDB Followers response: {}".format(cache_response))
 
 
 def cache_following(userID, following):
@@ -113,22 +72,6 @@ def cache_following(userID, following):
         Bucket=followingBucket,
         Key=userID
     )
-    # timestamp = int(time.time()) + int(cacheDuration) * 3600
-    # cache_response = dynamodb.put_item(
-    #     TableName=followingTableName,
-    #     Item={
-    #         'UserID': {
-    #             'N': userID
-    #         },
-    #         'Following': {
-    #             'S': json.dumps(following)
-    #         },
-    #         'ExpireAt': {
-    #             'N': str(timestamp)
-    #         }
-    #     }
-    # )
-    # print("DynamoDB Following response: {}".format(cache_response))
 
 
 # -------- Main Function (Start) --------
@@ -161,22 +104,15 @@ def followsMyFollowersHelper(source_user, target_user):
         if source_followers is None:
             source_followers = get_followers_for_id(source_id)
             cache_followers(source_id, source_followers)
-        print("Source followers:")
-        print(len(source_followers))
 
         # 4. Get users that target follows (look up in cache first)
         target_following = get_cached_following(target_id)
         if target_following is None:
             target_following = get_following_for_id(target_id)
             cache_following(target_id, target_following)
-        print("Target followers:")
-        print(len(source_followers))
 
         # 5. Get users that target follows that follow source
         users = get_overlap(source_followers, target_following)
-
-        print("Users:")
-        print(len(users))
 
         # 6. Return response
         body = {
