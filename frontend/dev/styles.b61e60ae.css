@@ -50,14 +50,14 @@
   }
 
   .result {
-      font-weight: 500;
+      font-size: 30px;
       text-align: center;
       padding: 5px;
   }
 
   /*-- Center Text --*/
   .center {
-      text-align: left;
+      text-align: center;
   }
 
   /*-- TextInput --*/
