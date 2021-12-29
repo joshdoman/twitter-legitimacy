@@ -1,0 +1,35 @@
+# Source: https://serverless-stack.com/chapters/configure-dynamodb-in-serverless.html
+
+Resources:
+  # Table for caching the followers of a user
+  FollowersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.followersTableName}
+      AttributeDefinitions:
+        - AttributeName: UserID
+          AttributeType: N
+      KeySchema:
+        - AttributeName: UserID
+          KeyType: HASH
+      TimeToLiveSpecification:
+        AttributeName: ExpireAt
+        Enabled: TRUE
+      # Set the capacity to auto-scale
+      BillingMode: PAY_PER_REQUEST
+  # Table for caching the a user's following
+  FollowingTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.followingTableName}
+      AttributeDefinitions:
+        - AttributeName: UserID
+          AttributeType: N
+      KeySchema:
+        - AttributeName: UserID
+          KeyType: HASH
+      TimeToLiveSpecification:
+        AttributeName: ExpireAt
+        Enabled: TRUE
+      # Set the capacity to auto-scale
+      BillingMode: PAY_PER_REQUEST

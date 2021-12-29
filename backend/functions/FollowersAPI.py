@@ -71,12 +71,12 @@ def get_followers_for_id(user_id):
     while not completed:
         params = get_params(pagination_token)
         json_response = connect_to_endpoint(url, params)
-        data.append(json_response['data'])
+        data.extend(json_response['data'])
         if 'next_token' in json_response['meta']:
             pagination_token = json_response['meta']['next_token']
         else:
             completed = True
-    return json_response
+    return data
 
 
 def get_following_for_id(user_id):
@@ -88,12 +88,12 @@ def get_following_for_id(user_id):
     while not completed:
         params = get_params(pagination_token)
         json_response = connect_to_endpoint(url, params)
-        data.append(json_response['data'])
+        data.extend(json_response['data'])
         if 'next_token' in json_response['meta']:
             pagination_token = json_response['meta']['next_token']
         else:
             completed = True
-    return json_response
+    return data
 
 
 def get_followers_for_username(username):

@@ -7,9 +7,14 @@ useDotenv: true
 plugins:
   - serverless-python-requirements
 
+
 custom:
   pythonRequirements:
     dockerizePip: true
+  # Set the DynamoDB Table Names here:
+  followersTableName: CachedFollowers
+  followingTableName: CachedFollowing
+
 
 provider:
   name: aws
@@ -17,17 +22,26 @@ provider:
   lambdaHashingVersion: '20201221'
   environment:
     BEARER_TOKEN: ${env:BEARER_TOKEN}
+    FOLLOWERS_TABLE_NAME: ${self:custom.followersTableName}
+    FOLLOWING_TABLE_NAME: ${self:custom.followingTableName}
+    CACHE_DURATION: 48  # i.e. 48 hours
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:GetItem"
+        - "dynamodb:PutItem"
+      Resource:
+        - arn:aws:dynamodb:us-east-1:153465547057:table/${self:custom.followersTableName}
+        - arn:aws:dynamodb:us-east-1:153465547057:table/${self:custom.followingTableName}
+
+
+# Create our resources with separate CloudFormation templates
+resources:
+  # DynamoDB
+  - ${file(resources/dynamodb.yml)}
+
 
 functions:
-  follows-my-followers-test:
-    handler: handler.followsMyFollowersTest
-    events:
-      - http:
-          path: /test
-          method: get
-    package:
-      patterns:
-        - functions
   follows-my-followers:
     handler: handler.followsMyFollowers
     events:
@@ -44,6 +58,15 @@ functions:
               - X-Amz-Security-Token
               - X-Amz-User-Agent
             allowCredentials: false
+    package:
+      patterns:
+        - functions
+  follows-my-followers-test:
+    handler: handler.followsMyFollowersTest
+    events:
+      - http:
+          path: /test
+          method: get
     package:
       patterns:
         - functions

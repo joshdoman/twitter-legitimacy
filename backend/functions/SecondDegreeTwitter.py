@@ -1,5 +1,7 @@
-from functions.FollowersAPI import get_followers_for_id, get_following_for_id
-from functions.UserAPI import get_user_info
+# from functions.FollowersAPI import get_followers_for_id, get_following_for_id
+# from functions.UserAPI import get_user_info
+from FollowersAPI import get_followers_for_id, get_following_for_id
+from UserAPI import get_user_info
 
 
 def get_overlap(users1, users2):
@@ -17,8 +19,8 @@ def get_overlap(users1, users2):
 
 
 def get_users_you_follow_that_follow_me(my_id, your_id):
-    my_followers = get_followers_for_id(my_id)["data"]
-    your_following = get_following_for_id(your_id)["data"]
+    my_followers = get_followers_for_id(my_id)
+    your_following = get_following_for_id(your_id)
     return get_overlap(my_followers, your_following)
 
 
