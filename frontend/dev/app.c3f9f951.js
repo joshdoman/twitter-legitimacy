@@ -1154,10 +1154,15 @@ var fetchService = new _FetchService.default();
 /*-- On Load -- */
 
 if (window.location.href.includes('/success')) {
-  var queryString = window.location.search;
-  var encodedResponse = queryString.split("?res=")[1];
-  var decodedResponse = decodeURIComponent(encodedResponse);
-  var responseJSON = JSON.parse(decodedResponse);
+  var responseStr = localStorage.getItem('response');
+
+  if (responseStr == null) {
+    alert("No response found. Please try again");
+    window.location = "/index.html";
+    return;
+  }
+
+  var responseJSON = JSON.parse(responseStr);
   var sourceUsername = responseJSON.source.username;
   var targetUsername = responseJSON.target.username;
   var followersFollowed = Array.from(responseJSON.followers_followed);
@@ -1195,7 +1200,7 @@ function submitForm(_x, _x2) {
 
 function _submitForm() {
   _submitForm = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee(e, form) {
-    var btnSubmit, jsonFormData, headers, response, responseEncoding;
+    var btnSubmit, jsonFormData, headers, response;
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -1220,10 +1225,10 @@ function _submitForm() {
 
           case 9:
             response = _context.sent;
-            // 2.5 Encode response
-            responseEncoding = encodeURIComponent(JSON.stringify(response)); // 2.6 Inform user of result
+            // 2.5 Save response to localStorage
+            localStorage.setItem("response", JSON.stringify(response)); // 2.6 Inform user of result
 
-            window.location = "/success.html?res=".concat(responseEncoding);
+            window.location = "/success.html";
             _context.next = 18;
             break;
 
@@ -1312,7 +1317,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59314" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53589" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

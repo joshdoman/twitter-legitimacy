@@ -6,38 +6,41 @@ const fetchService = new FetchService();
 
 /*-- On Load -- */
 if (window.location.href.includes('/success')) {
-  const queryString = window.location.search;
-  const encodedResponse = queryString.split("?res=")[1];
-  const decodedResponse = decodeURIComponent(encodedResponse);
-  const responseJSON = JSON.parse(decodedResponse);
+  const responseStr = localStorage.getItem('response');
+  if (responseStr == null) {
+    alert("No response found. Please try again");
+    window.location = `/index.html`;
+  } else {
+    const responseJSON = JSON.parse(responseStr);
 
-  const sourceUsername = responseJSON.source.username;
-  const targetUsername = responseJSON.target.username;
-  const followersFollowed = Array.from(responseJSON.followers_followed);
-  const count = followersFollowed.length;
+    const sourceUsername = responseJSON.source.username;
+    const targetUsername = responseJSON.target.username;
+    const followersFollowed = Array.from(responseJSON.followers_followed);
+    const count = followersFollowed.length;
 
-  // 1. Set title text on success page
-  var titleTxt;
-  var descriptionTxt;
-  if (count > 0) {
-    titleTxt = `@${targetUsername} follows ${count} of @${sourceUsername}'s followers:`
-  } else{
-    titleTxt = `@${targetUsername} does not follow any of @${sourceUsername}'s followers:`
+    // 1. Set title text on success page
+    var titleTxt;
+    var descriptionTxt;
+    if (count > 0) {
+      titleTxt = `@${targetUsername} follows ${count} of @${sourceUsername}'s followers:`
+    } else{
+      titleTxt = `@${targetUsername} does not follow any of @${sourceUsername}'s followers:`
+    }
+    document.getElementById('lblTitle').innerHTML = titleTxt;
+
+    let listElement = document.getElementById('listElement');
+    followersFollowed.forEach(json => {
+      // 1. Create an item for follower
+      let listItem = document.createElement('li');
+      listItem.classList.add('result');
+      // 2. Add the item text
+      const name = json.name;
+      const username = json.username;
+      listItem.innerHTML = `${name} (@${username})`;
+      // 3. Add listItem to the listElement
+      listElement.appendChild(listItem);
+    })
   }
-  document.getElementById('lblTitle').innerHTML = titleTxt;
-
-  let listElement = document.getElementById('listElement');
-  followersFollowed.forEach(json => {
-    // 1. Create an item for follower
-    let listItem = document.createElement('li');
-    listItem.classList.add('result');
-    // 2. Add the item text
-    const name = json.name;
-    const username = json.username;
-    listItem.innerHTML = `${name} (@${username})`;
-    // 3. Add listItem to the listElement
-    listElement.appendChild(listItem);
-  })
 }
 
 /*--Functions--*/
@@ -56,10 +59,10 @@ async function submitForm(e, form) {
     // 2.4 Request & Response
     try {
       const response = await fetchService.performPostHttpRequest(`https://drrhop28ba.execute-api.us-east-1.amazonaws.com/dev/`, headers, jsonFormData);
-      // 2.5 Encode response
-      const responseEncoding = encodeURIComponent(JSON.stringify(response));
+      // 2.5 Save response to localStorage
+      localStorage.setItem("response", JSON.stringify(response))
       // 2.6 Inform user of result
-      window.location = `/success.html?res=${responseEncoding}`;
+      window.location = `/success.html`;
     } catch (e) {
       console.log(e)
       alert(e)
